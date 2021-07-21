@@ -21,7 +21,7 @@ const Index: FC = () => {
       <button type="button" onClick={generate}>
         generate
       </button>
-      <textarea value={output} rows={30} />
+      <textarea value={output} rows={30} readOnly />
       <style jsx>
         {`
           textarea {

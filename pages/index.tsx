@@ -40,7 +40,7 @@ const Index: FC = () => {
           checked={requireKeys}
           onChange={(ev) => setRequireKeys(ev.target.checked)}
         />
-        <label htmlFor="requireKeys">Require all keys</label>
+        <label htmlFor="requireKeys">Require all object keys</label>
       </div>
       <button type="button" className="btn-generate" onClick={generate}>
         Generate schema

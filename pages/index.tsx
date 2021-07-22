@@ -5,11 +5,12 @@ import generateSchema from 'utils/generate';
 const Index: FC = () => {
   const [input, setInput] = useState('');
   const [output, setOutput] = useState('');
+  const [requireKeys, setRequireKeys] = useState(false);
 
   const generate = (): void => {
     try {
       const parsed = JSON.parse(input);
-      setOutput(generateSchema(parsed));
+      setOutput(generateSchema(parsed, requireKeys));
     } catch (err) {
       window.alert('invalid json');
     }
@@ -32,6 +33,15 @@ const Index: FC = () => {
         rows={20}
         placeholder="Input JSON"
       />
+      <div>
+        <input
+          type="checkbox"
+          id="requireKeys"
+          checked={requireKeys}
+          onChange={(ev) => setRequireKeys(ev.target.checked)}
+        />
+        <label htmlFor="requireKeys">Require all keys</label>
+      </div>
       <button type="button" className="btn-generate" onClick={generate}>
         Generate schema
       </button>
@@ -60,6 +70,10 @@ const Index: FC = () => {
             z-index: 1;
             top: 0;
             right: 0;
+          }
+
+          label {
+            margin-left: 0.5em;
           }
         `}
       </style>

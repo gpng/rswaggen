@@ -1,6 +1,6 @@
 const wrap = (str: string): string => `&${str}&`;
 
-const parseSingle = (obj: unknown): object => {
+const parseSingle = (obj: unknown, requireKeys: boolean): object => {
   switch (typeof obj) {
     case 'number':
       return {
@@ -29,23 +29,25 @@ const parseSingle = (obj: unknown): object => {
   if (Array.isArray(obj)) {
     return {
       [wrap('type')]: wrap(':array'),
-      [wrap('items')]: parseSingle(obj[0]),
+      [wrap('items')]: parseSingle(obj[0], requireKeys),
     };
   }
 
   const properties = {};
+  const keys = [];
   Object.keys(obj).forEach((key) => {
-    properties[wrap(key)] = parseSingle(obj[key]);
+    keys.push(key);
+    properties[wrap(key)] = parseSingle(obj[key], requireKeys);
   });
   return {
     [wrap('type')]: wrap(':object'),
     [wrap('properties')]: properties,
-    [wrap('required')]: wrap('%w[]'),
+    [wrap('required')]: wrap(`%w[${requireKeys ? keys.join(' ') : ''}]`),
   };
 };
 
-const generateSchema = (data: object): string => {
-  let str = JSON.stringify(parseSingle(data), null, 4);
+const generateSchema = (data: object, requireKeys: boolean): string => {
+  let str = JSON.stringify(parseSingle(data, requireKeys), null, 4);
   // clean up double apos as ruby doesn't use it for hash keys
   str = str.split('&"').join('');
   str = str.split('"&').join('');

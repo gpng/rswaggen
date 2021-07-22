@@ -44,7 +44,7 @@ const parseSingle = (obj: unknown): object => {
   };
 };
 
-const parse = (data: object): string => {
+const generateSchema = (data: object): string => {
   let str = JSON.stringify(parseSingle(data), null, 4);
   str = str.split('&"').join('');
   str = str.split('"&').join('');
@@ -55,4 +55,4 @@ const parse = (data: object): string => {
   return str;
 };
 
-export default parse;
+export default generateSchema;

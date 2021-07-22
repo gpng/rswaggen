@@ -46,8 +46,11 @@ const parseSingle = (obj: unknown): object => {
 
 const generateSchema = (data: object): string => {
   let str = JSON.stringify(parseSingle(data), null, 4);
+  // clean up double apos as ruby doesn't use it for hash keys
   str = str.split('&"').join('');
   str = str.split('"&').join('');
+  // remove first tab on each row
+  str = str.split(`\n    `).join('\n');
   // remove first brackets
   str = str.substring(2);
   // remove last brackets
